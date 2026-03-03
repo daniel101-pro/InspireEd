@@ -12,6 +12,7 @@ import StaggerContainer, {
   StaggerItem,
 } from "@/components/animations/StaggerContainer";
 import LineReveal from "@/components/animations/LineReveal";
+import GallerySection from "@/components/GallerySection";
 
 /* ─────────────────────────── DATA ─────────────────────────── */
 
@@ -358,6 +359,9 @@ export default function HomePage() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* ═══════════════════ GALLERY ═══════════════════ */}
+      <GallerySection />
 
       {/* ═══════════════════ CTA SECTION ═══════════════════ */}
       <section className="bg-dark py-28 md:py-40 relative overflow-hidden">

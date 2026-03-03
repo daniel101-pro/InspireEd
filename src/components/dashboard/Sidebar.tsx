@@ -9,6 +9,7 @@ import {
   Users,
   FileText,
   Heart,
+  Image,
   Settings,
   ArrowLeft,
 } from "lucide-react";
@@ -19,6 +20,7 @@ const navItems = [
   { href: "/dashboard/volunteers", label: "Volunteers", icon: Users },
   { href: "/dashboard/content", label: "Content", icon: FileText },
   { href: "/dashboard/mentorship", label: "Mentorship", icon: Heart },
+  { href: "/dashboard/gallery", label: "Gallery", icon: Image },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 

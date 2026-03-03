@@ -44,7 +44,7 @@ export default function MiniChart({
   xKey,
   yKey,
   type = "area",
-  color = "#1A6B6A",
+  color = "#D4AA04",
 }: MiniChartProps) {
   const gridStroke = "rgba(13, 13, 13, 0.08)";
   const axisStyle = { fontSize: 11, fill: "rgba(13, 13, 13, 0.35)" };

@@ -99,6 +99,14 @@ export interface AnalyticsTrend {
   programs: number;
 }
 
+export interface GalleryImage {
+  id: string;
+  src: string;
+  alt: string;
+  category: string;
+  createdAt: string;
+}
+
 export interface DashboardData {
   programs: Program[];
   volunteers: VolunteerApplication[];
@@ -112,4 +120,5 @@ export interface DashboardData {
   settings: SiteSettings;
   stats: ImpactStats;
   trends: AnalyticsTrend[];
+  gallery: GalleryImage[];
 }

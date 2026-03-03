@@ -66,6 +66,17 @@ export default function Footer() {
           <p className="text-xs text-cream/20">
             &copy; {new Date().getFullYear()} InspireED Initiative
           </p>
+          <p className="text-xs text-cream/20">
+            Website crafted by{" "}
+            <a
+              href="https://forgeafrica.co"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cream/40 transition-colors hover:text-accent"
+            >
+              Forge Africa
+            </a>
+          </p>
           <Link
             href="/"
             className="text-sm font-medium tracking-tight text-cream/40 transition-colors hover:text-cream"

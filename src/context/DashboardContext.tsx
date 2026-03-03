@@ -4,7 +4,7 @@ import { createContext, useContext, useReducer, useEffect, useState, ReactNode }
 import type {
   DashboardData, Program, VolunteerApplication, Article, FAQ,
   Resource, TeamMember, Partner, MentorshipApplication, MentorMenteePair,
-  SiteSettings, ImpactStats,
+  SiteSettings, ImpactStats, GalleryImage,
 } from "@/types/dashboard";
 import { seedData } from "@/data/seed";
 
@@ -44,6 +44,9 @@ type Action =
   | { type: "UPDATE_MENTORSHIP_APP_STATUS"; payload: { id: string; status: MentorshipApplication["status"] } }
   | { type: "UPDATE_SETTINGS"; payload: Partial<SiteSettings> }
   | { type: "UPDATE_STATS"; payload: Partial<ImpactStats> }
+  | { type: "ADD_GALLERY_IMAGE"; payload: Omit<GalleryImage, "id" | "createdAt"> }
+  | { type: "UPDATE_GALLERY_IMAGE"; payload: { id: string; updates: Partial<GalleryImage> } }
+  | { type: "DELETE_GALLERY_IMAGE"; payload: string }
   | { type: "RESET" };
 
 function reducer(state: DashboardData, action: Action): DashboardData {
@@ -113,6 +116,14 @@ function reducer(state: DashboardData, action: Action): DashboardData {
     case "UPDATE_MENTORSHIP_APP_STATUS":
       return { ...state, mentorshipApplications: state.mentorshipApplications.map(a => a.id === action.payload.id ? { ...a, status: action.payload.status } : a) };
 
+    // Gallery
+    case "ADD_GALLERY_IMAGE":
+      return { ...state, gallery: [...state.gallery, { ...action.payload, id: genId(), createdAt: now() }] };
+    case "UPDATE_GALLERY_IMAGE":
+      return { ...state, gallery: state.gallery.map(g => g.id === action.payload.id ? { ...g, ...action.payload.updates } : g) };
+    case "DELETE_GALLERY_IMAGE":
+      return { ...state, gallery: state.gallery.filter(g => g.id !== action.payload) };
+
     // Settings
     case "UPDATE_SETTINGS":
       return { ...state, settings: { ...state.settings, ...action.payload } };
@@ -141,8 +152,8 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as DashboardData;
-        dispatch({ type: "SET_ALL", payload: parsed });
+        const parsed = JSON.parse(stored) as Partial<DashboardData>;
+        dispatch({ type: "SET_ALL", payload: { ...seedData, ...parsed, gallery: parsed.gallery ?? seedData.gallery } });
       }
     } catch {
       // Use seed data on error

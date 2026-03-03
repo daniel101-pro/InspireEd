@@ -109,4 +109,15 @@ export const seedData: DashboardData = {
     { month: "Feb", youth: 480, volunteers: 48, programs: 28 },
     { month: "Mar", youth: 500, volunteers: 50, programs: 30 },
   ],
+
+  gallery: [
+    { id: "g1", src: "https://images.unsplash.com/photo-1491975474562-1f4e30bc9468?w=800&q=80", alt: "Students collaborating in study group", category: "Programs", createdAt: "2025-09-01" },
+    { id: "g2", src: "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&q=80", alt: "Youth summit keynote presentation", category: "Events", createdAt: "2025-09-15" },
+    { id: "g3", src: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&q=80", alt: "Workshop on career readiness", category: "Workshops", createdAt: "2025-10-01" },
+    { id: "g4", src: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80", alt: "Community volunteer day", category: "Community", createdAt: "2025-10-15" },
+    { id: "g5", src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80", alt: "Mentorship session in progress", category: "Mentorship", createdAt: "2025-11-01" },
+    { id: "g6", src: "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800&q=80", alt: "Students celebrating graduation", category: "Events", createdAt: "2025-11-15" },
+    { id: "g7", src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80", alt: "Group brainstorming session", category: "Programs", createdAt: "2025-12-01" },
+    { id: "g8", src: "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=800&q=80", alt: "Digital skills workshop", category: "Workshops", createdAt: "2025-12-15" },
+  ],
 };
