@@ -10,7 +10,7 @@ import SearchFilter from "@/components/dashboard/SearchFilter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Pencil, Trash2, ExternalLink } from "lucide-react";
 
-const categories = ["All", "Programs", "Events", "Workshops", "Community", "Mentorship"];
+const categories = ["All", "Spotlight", "Ambassadors", "Events", "Community"];
 
 export default function GalleryPage() {
   const { data, dispatch } = useDashboard();
@@ -20,7 +20,7 @@ export default function GalleryPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
 
-  const [form, setForm] = useState({ src: "", alt: "", category: "Programs" });
+  const [form, setForm] = useState({ src: "", alt: "", category: "Spotlight" });
 
   const filtered = data.gallery.filter((img) => {
     const matchSearch = img.alt.toLowerCase().includes(search.toLowerCase()) || img.category.toLowerCase().includes(search.toLowerCase());
@@ -30,7 +30,7 @@ export default function GalleryPage() {
 
   function openAdd() {
     setEditing(null);
-    setForm({ src: "", alt: "", category: "Programs" });
+    setForm({ src: "", alt: "", category: "Spotlight" });
     setModalOpen(true);
   }
 

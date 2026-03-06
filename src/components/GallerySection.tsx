@@ -14,17 +14,27 @@ import ScrollReveal from "./animations/ScrollReveal";
 import LineReveal from "./animations/LineReveal";
 
 const galleryImages = [
-  { src: "https://images.unsplash.com/photo-1491975474562-1f4e30bc9468?w=800&q=80", alt: "Students collaborating", category: "Programs" },
-  { src: "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&q=80", alt: "Youth summit", category: "Events" },
-  { src: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&q=80", alt: "Career workshop", category: "Workshops" },
-  { src: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80", alt: "Community day", category: "Community" },
-  { src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80", alt: "Mentorship session", category: "Mentorship" },
-  { src: "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800&q=80", alt: "Graduation day", category: "Events" },
-  { src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80", alt: "Brainstorming", category: "Programs" },
-  { src: "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=800&q=80", alt: "Digital skills", category: "Workshops" },
+  { src: "/Gallery/1-1.png", alt: "Seyi Emmanuel Ogundipe — The Stand Out Factor", category: "Spotlight" },
+  { src: "/Gallery/3.png", alt: "Varnessa Kayen Varlyngton — Eco Journalist & UN Champion", category: "Spotlight" },
+  { src: "/Gallery/4-4.png", alt: "Chidera Duru — Education and Technology", category: "Spotlight" },
+  { src: "/Gallery/5.png", alt: "The Stand Out Factor — Secret to a Memorable Application", category: "Events" },
+  { src: "/Gallery/5-3.png", alt: "Tony Odhiambo — MIT Scholar & STEM Educator", category: "Spotlight" },
+  { src: "/Gallery/6-1.png", alt: "Ambassador Kabengwa Eric — Makerere University", category: "Ambassadors" },
+  { src: "/Gallery/7.png", alt: "Ambassador Omar Touray — Gambia", category: "Ambassadors" },
+  { src: "/Gallery/9-2.png", alt: "Ambassador Bonou Precious", category: "Ambassadors" },
+  { src: "/Gallery/10.png", alt: "Ambassador Aghomi Dabo", category: "Ambassadors" },
+  { src: "/Gallery/14-1.png", alt: "Unlocking the Power of Technology and Education", category: "Events" },
+  { src: "/Gallery/17_20260227_204106_0016.png", alt: "Digital Fame — Becoming a Recognizable Voice Online", category: "Events" },
+  { src: "/Gallery/InspirED.png", alt: "Ambassador Olanireti Godgift — Career Builder College", category: "Ambassadors" },
+  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20.png", alt: "Meet the InspireED Team", category: "Community" },
+  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20_20260220_134701_0000.png", alt: "January Project Winners — The Optimistics One", category: "Community" },
+  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20_20260227_204721_0000.png", alt: "Oluwadamilare Joseph — Digital Fame Spotlight", category: "Spotlight" },
+  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20(2)-2.png", alt: "Daniel Falodun — Full-Stack Developer & Rise Global Fellow", category: "Spotlight" },
+  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20-2.png", alt: "Ambassador Excel Ebeagbor — Montessori School", category: "Ambassadors" },
+  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20%20(2).png", alt: "Partnership Announcement — InspireED x ICOVE", category: "Community" },
 ];
 
-const categories = ["All", "Programs", "Events", "Workshops", "Community", "Mentorship"];
+const categories = ["All", "Spotlight", "Ambassadors", "Events", "Community"];
 
 function GalleryCard({
   src,
@@ -60,7 +70,7 @@ function GalleryCard({
   }
 
   // Staggered heights for masonry effect
-  const heights = ["aspect-[3/4]", "aspect-square", "aspect-[4/5]", "aspect-[3/4]", "aspect-[4/5]", "aspect-square", "aspect-[3/4]", "aspect-[4/5]"];
+  const heights = ["aspect-square", "aspect-[4/5]", "aspect-square", "aspect-[5/6]", "aspect-square", "aspect-[4/5]", "aspect-square", "aspect-[5/6]", "aspect-square"];
   const aspectClass = heights[index % heights.length];
 
   return (
