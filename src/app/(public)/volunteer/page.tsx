@@ -40,34 +40,34 @@ const reasons = [
 
 const roles = [
   {
-    title: "Tutor",
+    title: "Community Manager",
     description:
-      "Help students master core academic subjects through one-on-one or small group sessions tailored to individual learning needs.",
-    commitment: "2 -- 4 hrs / week",
+      "Help manage and grow our online community spaces, ensuring a positive and engaging environment for students, volunteers, and ambassadors.",
   },
   {
-    title: "Workshop Facilitator",
+    title: "Graphics Designer",
     description:
-      "Lead engaging, skill-building workshops on topics like public speaking, financial literacy, creative writing, and STEM.",
-    commitment: "3 -- 5 hrs / week",
+      "Create visual content including social media posts, flyers, presentations, and branding materials that communicate our mission effectively.",
   },
   {
-    title: "Event Coordinator",
+    title: "Video Editor",
     description:
-      "Plan, organize, and execute community events, fundraisers, and educational showcases that bring people together.",
-    commitment: "4 -- 6 hrs / week",
+      "Produce and edit engaging video content for our sessions, social media platforms, and promotional campaigns that capture and share our impact.",
   },
   {
-    title: "Admin Support",
+    title: "Social Media Handler",
     description:
-      "Assist with day-to-day operations including scheduling, data entry, communications, and resource management.",
-    commitment: "2 -- 3 hrs / week",
+      "Manage our social media presence, create content calendars, engage with our audience, and help build our online community across platforms.",
   },
   {
-    title: "Outreach",
+    title: "Content Creator",
     description:
-      "Spread the word about InspireED, recruit new participants and volunteers, and build partnerships with local organizations.",
-    commitment: "2 -- 4 hrs / week",
+      "Write compelling articles, blog posts, newsletters, and educational content that resonates with students and supports our mission.",
+  },
+  {
+    title: "Head of Programs",
+    description:
+      "Coordinate and oversee the planning, execution, and evaluation of InspireED programs, ensuring each session delivers maximum impact for our students.",
   },
 ];
 
@@ -81,11 +81,12 @@ const ambassadorBenefits = [
 ];
 
 const roleOptions = [
-  "Tutor",
-  "Workshop Facilitator",
-  "Event Coordinator",
-  "Administrative Support",
-  "Outreach Volunteer",
+  "Community Manager",
+  "Graphics Designer",
+  "Video Editor",
+  "Social Media Handler",
+  "Content Creator",
+  "Head of Programs",
   "Ambassador",
 ];
 
@@ -222,7 +223,7 @@ export default function VolunteerPage() {
 
           <ScrollReveal className="mt-16">
             <p className="font-sans text-xs uppercase tracking-[0.35em] text-accent">
-              Volunteer Roles
+              Volunteering Roles
             </p>
             <h2 className="mt-4 font-serif text-4xl font-light tracking-tight text-dark sm:text-5xl lg:text-6xl">
               Find your fit
@@ -243,24 +244,17 @@ export default function VolunteerPage() {
                     </div>
 
                     {/* Role name */}
-                    <div className="sm:col-span-3">
+                    <div className="sm:col-span-4">
                       <h3 className="font-serif text-2xl font-normal tracking-tight text-dark transition-colors group-hover:text-accent sm:text-3xl">
                         {role.title}
                       </h3>
                     </div>
 
                     {/* Description */}
-                    <div className="sm:col-span-5">
+                    <div className="sm:col-span-7">
                       <p className="font-sans text-base leading-relaxed text-dark/50">
                         {role.description}
                       </p>
-                    </div>
-
-                    {/* Commitment */}
-                    <div className="sm:col-span-3 sm:text-right">
-                      <span className="font-sans text-sm text-dark/30">
-                        {role.commitment}
-                      </span>
                     </div>
                   </div>
                 </StaggerItem>
@@ -459,7 +453,7 @@ export default function VolunteerPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
                     }
-                    placeholder="(555) 000-0000"
+                    placeholder="+(234) 000-000-0000"
                     className="mt-4 w-full border-b border-dark/20 bg-transparent pb-3 font-sans text-base text-dark outline-none transition-colors placeholder:text-dark/20 focus:border-accent"
                   />
                 </div>

@@ -46,17 +46,55 @@ export default function Footer() {
                   {link.label}
                 </Link>
               ))}
+              <a
+                href="https://chat.whatsapp.com/De8dAQTc8rE4divhzVV7WG?mode=gi_t"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-cream/40 transition-colors duration-300 hover:text-accent"
+              >
+                Join Community
+              </a>
             </div>
           </ScrollReveal>
 
           {/* Contact */}
           <ScrollReveal delay={0.2}>
             <div className="space-y-2 text-sm text-cream/40">
-              <p>info@inspireed.org</p>
-              <p>(555) 123-4567</p>
+              <p>
+                <a href="mailto:inspireed.ink@gmail.com" className="hover:text-accent transition-colors">
+                  inspireed.ink@gmail.com
+                </a>
+              </p>
+              <p>
+                <a href="tel:+2348109198312" className="hover:text-accent transition-colors">
+                  +(234) 8109198312
+                </a>
+              </p>
             </div>
           </ScrollReveal>
         </div>
+
+        {/* Social links */}
+        <ScrollReveal delay={0.3}>
+          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+            <a
+              href="https://www.instagram.com/inspireed_connect?igsh=cXQ4bnlqeThsejZx"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-cream/30 transition-colors hover:text-accent"
+            >
+              Instagram
+            </a>
+            <a
+              href="https://www.linkedin.com/company/inspired-initiative1/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-cream/30 transition-colors hover:text-accent"
+            >
+              LinkedIn
+            </a>
+          </div>
+        </ScrollReveal>
 
         <div className="mt-16">
           <LineReveal className="opacity-10" />

@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import TextReveal from "@/components/animations/TextReveal";
 import ScrollReveal from "@/components/animations/ScrollReveal";
@@ -17,30 +17,87 @@ import GallerySection from "@/components/GallerySection";
 /* ─────────────────────────── DATA ─────────────────────────── */
 
 const impactStats = [
-  { target: 500, suffix: "+", label: "Youth Impacted" },
-  { target: 50, suffix: "+", label: "Mentors & Volunteers" },
-  { target: 30, suffix: "+", label: "Programs Delivered" },
-  { target: 15, suffix: "+", label: "Community Partners" },
+  {
+    target: 150,
+    suffix: "+",
+    label: "Students Empowered",
+    description:
+      "Through our sessions, community programs, and educational initiatives, InspireED has empowered over 150 students with valuable knowledge, exposure, and opportunities for growth.",
+  },
+  {
+    target: 5,
+    suffix: "+",
+    label: "Expert Speakers & Mentors",
+    description:
+      "We have hosted inspiring speakers including professionals, mentors, and industry leaders who share their experiences and insights to guide students on their academic and career journeys.",
+  },
+  {
+    target: 3,
+    suffix: "+",
+    label: "Impactful Learning Sessions",
+    description:
+      "InspireED has organized engaging virtual sessions focused on helping students understand opportunities, improve their applications, and develop skills needed for future success.",
+  },
+  {
+    target: 10,
+    suffix: "+",
+    label: "Community Partners",
+    description:
+      "Our growing network of passionate volunteers, ambassadors, and students continues to expand, building a supportive community dedicated to learning, mentorship, and positive impact.",
+  },
 ];
 
 const programs = [
   {
     index: "01",
-    title: "Study Sessions & Tutoring",
+    title: "Learning Sessions & Webinars",
     description:
-      "Personalized academic support in a collaborative environment, building strong foundations in core subjects and effective study habits.",
+      "We organize engaging learning sessions and webinars where students interact with experienced professionals, mentors, entrepreneurs, and experts from different industries.",
   },
   {
     index: "02",
-    title: "Career & Life Skills Workshops",
+    title: "Mentorship & Career Guidance",
     description:
-      "Practical workshops on resume building, financial literacy, and professional development to prepare youth for future success.",
+      "InspireED connects students with mentors who provide guidance on education, career paths, and personal development, helping them make better decisions about their future.",
   },
   {
     index: "03",
-    title: "Youth Summits & Events",
+    title: "Application & Opportunity Support",
     description:
-      "Inspiring gatherings that bring young people together to network, learn from leaders, and explore growth opportunities.",
+      "We help students learn how to prepare strong applications for scholarships, schools, internships, and leadership opportunities — standing out with confidence.",
+  },
+];
+
+const testimonials = [
+  {
+    name: "Rita",
+    quote:
+      "InspireED first session taught me a lot, but Mr Seyi\u2019s session stood out for me the most. He said \u201CWherever you are, whatever you\u2019re applying for, be yourself, don\u2019t be generic. Just stand out\u201D. This hit me so hard because many times, I act professional just to get accepted.",
+  },
+  {
+    name: "David",
+    quote:
+      "InspireED initiative taught me leadership and how to grow in everything I do.",
+  },
+  {
+    name: "Samuel",
+    quote:
+      "I learnt what impact means and how important it is to make a change and become a changemaker.",
+  },
+  {
+    name: "Bisola",
+    quote:
+      "I would recommend InspireED initiative to every student I know that wants to grow, learn, serve, lead and address a problem but doesn\u2019t have the right medium. InspireED is everything and more.",
+  },
+  {
+    name: "Precious",
+    quote:
+      "Joining InspireED initiative and being an ambassador has taught me leadership, values and given me the ability to network and meet like-minded individuals.",
+  },
+  {
+    name: "Joseph",
+    quote:
+      "The best moments for me were the monthly projects, it really pushes us to brainstorm, connect, network and solve an issue affecting us or people around us. InspireED is the best fr!",
   },
 ];
 
@@ -50,7 +107,7 @@ const marqueeItems = [
   "COMMUNITY",
   "GROWTH",
   "LEADERSHIP",
-  "INNOVATION",
+  "IMPACT",
 ];
 
 /* ─────────────────────────── PAGE ─────────────────────────── */
@@ -63,6 +120,8 @@ export default function HomePage() {
   });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   return (
     <>
@@ -163,9 +222,16 @@ export default function HomePage() {
             <p className="text-xs uppercase tracking-[0.3em] text-dark/40 mb-4">
               Our Impact
             </p>
-            <h2 className="font-serif text-dark text-3xl md:text-4xl lg:text-5xl tracking-tight mb-16 md:mb-24">
-              Numbers that speak
+            <h2 className="font-serif text-dark text-3xl md:text-4xl lg:text-5xl tracking-tight mb-6">
+              Numbers that Speak
             </h2>
+            <p className="text-dark/50 text-sm md:text-base leading-relaxed max-w-3xl mb-16 md:mb-24">
+              At InspireED, impact is more than just numbers &mdash; it represents
+              the students inspired, the opportunities created, and the future
+              leaders being shaped. Through our programs, mentorship, and community
+              initiatives, we continue to empower young people with knowledge,
+              guidance, and the confidence to pursue their goals.
+            </p>
           </ScrollReveal>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-0">
@@ -199,10 +265,23 @@ export default function HomePage() {
                   <p className="mt-3 text-dark/40 text-xs md:text-sm uppercase tracking-widest">
                     {stat.label}
                   </p>
+                  <p className="mt-3 text-dark/40 text-xs leading-relaxed hidden lg:block">
+                    {stat.description}
+                  </p>
                 </ScrollReveal>
               </div>
             ))}
           </div>
+
+          {/* Extra community stats */}
+          <ScrollReveal delay={0.6} className="mt-12 text-center lg:text-left">
+            <div className="flex flex-wrap justify-center lg:justify-start gap-8">
+              <div className="flex items-center gap-3">
+                <span className="font-serif text-accent text-2xl md:text-3xl font-bold">30+</span>
+                <span className="text-dark/50 text-sm">Mentors &amp; Volunteers</span>
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -304,14 +383,14 @@ export default function HomePage() {
             >
               <div className="space-y-6">
                 <p className="text-dark/50 text-sm md:text-base leading-relaxed">
-                  Our methodology is rooted in personal connection. Every
-                  program, workshop, and mentorship pairing is designed to meet
-                  young people exactly where they are.
+                  Our approach is rooted in meaningful connection. Every session,
+                  program, and mentorship opportunity is carefully designed to
+                  support young people exactly where they are in their journey.
                 </p>
                 <p className="text-dark/50 text-sm md:text-base leading-relaxed">
-                  We do not just teach subjects — we cultivate confidence,
-                  critical thinking, and the resilience needed to thrive in an
-                  ever-changing world.
+                  We do not only share knowledge &mdash; we nurture confidence,
+                  strengthen critical thinking, and build the resilience students
+                  need to thrive in a constantly changing world.
                 </p>
                 <LineReveal delay={0.5} />
                 <p className="text-dark/30 text-xs uppercase tracking-[0.3em]">
@@ -325,12 +404,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════════════════ TESTIMONIAL ═══════════════════ */}
+      {/* ═══════════════════ TESTIMONIALS ═══════════════════ */}
       <section className="bg-cream py-24 md:py-36 border-t border-dark/10">
-        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-20">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
           <ScrollReveal>
-            <div className="relative">
-              {/* Opening quote mark */}
+            <p className="text-xs uppercase tracking-[0.3em] text-dark/40 mb-4">
+              Testimonies
+            </p>
+            <h2 className="font-serif text-dark text-3xl md:text-4xl lg:text-5xl tracking-tight mb-16 md:mb-20">
+              What our students say
+            </h2>
+          </ScrollReveal>
+
+          {/* Featured testimonial */}
+          <ScrollReveal>
+            <div className="relative mb-16">
               <span
                 className="absolute -top-8 -left-2 md:-top-12 md:-left-6 font-serif text-accent/20 text-[8rem] md:text-[12rem] leading-none select-none pointer-events-none"
                 aria-hidden="true"
@@ -339,22 +427,52 @@ export default function HomePage() {
               </span>
 
               <blockquote className="relative z-10">
-                <p className="font-serif italic text-dark text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-[1.2] tracking-tight max-w-5xl">
-                  InspireED changed my perspective on what I could achieve. The
-                  mentorship I received helped me gain the confidence to apply
-                  for scholarships I never thought were possible.
-                </p>
+                <motion.p
+                  key={activeTestimonial}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                  className="font-serif italic text-dark text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-[1.3] tracking-tight max-w-5xl"
+                >
+                  {testimonials[activeTestimonial].quote}
+                </motion.p>
               </blockquote>
 
-              <ScrollReveal delay={0.3} className="mt-10 md:mt-14">
-                <LineReveal className="max-w-[80px] mb-6" />
+              <motion.div
+                key={`name-${activeTestimonial}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="mt-8"
+              >
+                <LineReveal className="max-w-[80px] mb-4" />
                 <p className="text-dark text-sm md:text-base font-medium">
-                  Amara J.
+                  {testimonials[activeTestimonial].name}
                 </p>
                 <p className="text-dark/40 text-xs md:text-sm mt-1">
-                  Program Participant, Class of 2025
+                  InspireED Student
                 </p>
-              </ScrollReveal>
+              </motion.div>
+            </div>
+          </ScrollReveal>
+
+          {/* Testimonial selector */}
+          <ScrollReveal delay={0.3}>
+            <div className="flex flex-wrap gap-3">
+              {testimonials.map((t, i) => (
+                <button
+                  key={t.name}
+                  onClick={() => setActiveTestimonial(i)}
+                  className={`px-4 py-2 text-sm transition-all duration-300 border ${
+                    i === activeTestimonial
+                      ? "bg-dark text-cream border-dark"
+                      : "bg-transparent text-dark/50 border-dark/20 hover:border-dark/50"
+                  }`}
+                >
+                  {t.name}
+                </button>
+              ))}
             </div>
           </ScrollReveal>
         </div>
@@ -386,10 +504,10 @@ export default function HomePage() {
             </p>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.5} className="mt-10 md:mt-14">
+          <ScrollReveal delay={0.5} className="mt-10 md:mt-14 flex flex-wrap justify-center gap-4">
             <MagneticButton strength={0.25}>
               <Link
-                href="/get-involved"
+                href="/volunteer"
                 className="group inline-flex items-center gap-3 border border-cream/20 hover:border-cream/50 text-cream px-8 py-4 text-sm md:text-base uppercase tracking-[0.2em] transition-all duration-500 hover:bg-cream/5"
               >
                 Get involved
@@ -405,6 +523,27 @@ export default function HomePage() {
                   &rarr;
                 </motion.span>
               </Link>
+            </MagneticButton>
+            <MagneticButton strength={0.25}>
+              <a
+                href="https://chat.whatsapp.com/De8dAQTc8rE4divhzVV7WG?mode=gi_t"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-3 bg-accent hover:bg-accent/90 text-cream px-8 py-4 text-sm md:text-base uppercase tracking-[0.2em] transition-all duration-500"
+              >
+                Join our community
+                <motion.span
+                  className="inline-block"
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  &rarr;
+                </motion.span>
+              </a>
             </MagneticButton>
           </ScrollReveal>
         </div>

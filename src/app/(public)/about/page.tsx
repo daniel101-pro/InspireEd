@@ -56,50 +56,55 @@ const coreValues = [
 
 const teamMembers = [
   {
-    name: "Amara Johnson",
-    initials: "AJ",
-    title: "Executive Director",
-    bio: "With over 15 years in education leadership, Amara founded InspireED to bridge the gap between potential and opportunity for underserved youth.",
+    name: "Raphael Ogundipe",
+    initials: "RO",
+    title: "Founder & Team Lead",
+    bio: "Visionary behind InspireED initiative. A 15-year-old changemaker, moved by impact and ready to make a change and lead the giants of the next generation into greatness!",
   },
   {
-    name: "David Chen",
-    initials: "DC",
-    title: "Program Director",
-    bio: "David designs and oversees all youth programs, drawing on his background in curriculum development and experiential learning.",
+    name: "Rita",
+    initials: "RI",
+    title: "Graphic Designer",
+    bio: "Rita has been an incredible asset to InspireED. Her creativity and design skills are truly unmatched. Whenever we need impromptu designs, Rita effortlessly brings our vision to life. She also played a key role in hosting our first InspireED session.",
   },
   {
-    name: "Sofia Martinez",
-    initials: "SM",
-    title: "Outreach Coordinator",
-    bio: "Sofia builds meaningful partnerships with schools, families, and community organizations to extend InspireED's reach.",
+    name: "Yewande",
+    initials: "YE",
+    title: "Programs Coordinator",
+    bio: "Yewande is the driving force behind our events. She meticulously plans every detail, from schedules to logistics. Whether it\u2019s a seminar, a workshop, or a picnic event, Yewande ensures that everything runs smoothly and efficiently.",
   },
   {
-    name: "Marcus Williams",
-    initials: "MW",
-    title: "Volunteer Manager",
-    bio: "Marcus recruits, trains, and supports our incredible network of volunteers who bring our programs to life every day.",
+    name: "Favour",
+    initials: "FA",
+    title: "Social Media Manager",
+    bio: "Favour is the heartbeat of our Instagram presence. With her deep understanding of social media, she crafts engaging posts and fosters a vibrant online community. Her positive energy and excellent communication skills bring a wonderful vibe to our team.",
   },
   {
-    name: "Priya Patel",
-    initials: "PP",
-    title: "Mentorship Lead",
-    bio: "Priya pairs youth with dedicated mentors and ensures every mentoring relationship is impactful, supportive, and goal-oriented.",
+    name: "Samuel",
+    initials: "SA",
+    title: "Content Writer",
+    bio: "Samuel is our go-to wordsmith. Whenever we need fresh and compelling content, Samuel steps in with creative ideas and engaging text. His contributions ensure that our messaging is always clear, impactful, and well-crafted.",
   },
   {
-    name: "James Okafor",
-    initials: "JO",
-    title: "Communications Director",
-    bio: "James shares the stories of InspireED's impact, managing outreach campaigns and amplifying youth voices across platforms.",
+    name: "Opemipo",
+    initials: "OP",
+    title: "PR & Community Manager",
+    bio: "Opemipo is the pillar of our community management. She ensures that our group remains positive, engaged, and well-organized, especially during busy periods. Her efforts help maintain a supportive environment.",
+  },
+  {
+    name: "Gifted",
+    initials: "GI",
+    title: "Video Creator",
+    bio: "Gifted is our video expert, bringing our content to life with her creative touch. Every video she produces is engaging and visually compelling. Gifted\u2019s friendly personality and dedication also add a wonderful vibe to the team.",
   },
 ];
 
 const partners = [
-  "Bright Futures Foundation",
-  "Community First Bank",
-  "Metro School District",
-  "Youth Action Network",
-  "TechBridge Labs",
-  "United Giving Alliance",
+  "iCove Initiative",
+  "Femi Omolade Private College",
+  "Seyi Ogundipe",
+  "Daniel Falodun",
+  "Forge Africa",
 ];
 
 /* ────────────────────────────────────────────
@@ -139,7 +144,7 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════════════════════════
-          2. OUR STORY
+          2. OUR STORY — THE FOUNDER'S POV
           ═══════════════════════════════════════ */}
       <section className="py-20 md:py-32">
         <div className="mx-auto max-w-7xl px-6">
@@ -148,7 +153,7 @@ export default function AboutPage() {
             <div className="md:col-span-4">
               <ScrollReveal direction="left">
                 <p className="text-xs font-sans uppercase tracking-[0.35em] text-accent">
-                  Est. 2018
+                  The Founder&apos;s POV
                 </p>
                 <h2 className="mt-4 font-serif text-5xl font-bold leading-[1.1] tracking-tight text-dark sm:text-6xl">
                   Our
@@ -163,29 +168,66 @@ export default function AboutPage() {
               <ScrollReveal delay={0.2}>
                 <div className="space-y-6 text-base leading-[1.8] text-dark/70 font-sans md:text-lg">
                   <p>
-                    InspireED Initiative was founded by a group of passionate
-                    educators and community leaders who saw a growing need for
-                    accessible, high-quality youth development programs. Too many
-                    young people in our communities lacked the resources, guidance,
-                    and support systems needed to thrive academically and personally.
+                    For years, I found myself telling my friends about the importance
+                    of doing things that truly matter. I wanted us to make an impact
+                    together, even though I had not yet started making one myself.
+                    At the time, I blamed many things for the lack of progress &mdash;
+                    especially my school.
                   </p>
                   <p>
-                    What started as a small after-school tutoring circle in a local
-                    community center has grown into a comprehensive initiative
-                    offering mentorship, skill-building workshops, leadership
-                    development, and much more. Today, InspireED serves hundreds of
-                    young people across multiple communities, and our network of
-                    dedicated volunteers and partners continues to expand.
+                    Everything changed one night. During a call with my mentor and
+                    brother, he shared something that reshaped the way I saw success
+                    and responsibility. After listening carefully, he told me something
+                    that stayed with me: &ldquo;How do you expect them to follow you
+                    when you haven&apos;t given them a reason to &mdash; when you
+                    haven&apos;t shown them what success looks like?&rdquo;
                   </p>
                   <p>
-                    We remain rooted in the belief that every young person deserves
-                    the chance to discover their potential, and we are committed to
-                    making that belief a reality &mdash; one student at a time.
+                    That moment changed my perspective completely. I realized that
+                    instead of blaming others, I needed to lead by example. I made a
+                    promise to myself that night: I would stop blaming circumstances
+                    and start creating solutions.
+                  </p>
+                  <p>
+                    I also understood something important &mdash; many students were
+                    facing the same challenge I once faced. The real problem was not a
+                    lack of passion or potential. It was a lack of exposure, mentorship,
+                    and access to the knowledge needed to grow and make meaningful
+                    contributions to society.
+                  </p>
+                  <p>
+                    That realization became the foundation for InspireED. After days of
+                    brainstorming ideas and possible names, I eventually came across the
+                    name InspireED, and it immediately felt right. It represented exactly
+                    what I wanted to build &mdash; a platform that inspires students and
+                    equips them with the education, guidance, and opportunities they need
+                    to succeed.
+                  </p>
+                  <p>
+                    Not everyone believed in the idea at first. When I shared it with some
+                    classmates, many ignored it. But rather than discouraging me, their
+                    reaction strengthened my resolve to keep building.
+                  </p>
+                  <p>
+                    Today, InspireED is more than an idea. It is a growing platform
+                    dedicated to empowering students through mentorship sessions,
+                    learning opportunities, and a community that encourages young people
+                    to discover their potential and make a positive impact.
+                  </p>
+                  <p className="italic text-dark/90 font-serif text-lg md:text-xl">
+                    &mdash; Raphael Ogundipe
                   </p>
                 </div>
               </ScrollReveal>
             </div>
           </div>
+
+          <ScrollReveal delay={0.4} className="mt-16">
+            <p className="text-center text-lg leading-relaxed text-dark/60 font-sans md:text-xl max-w-3xl mx-auto italic">
+              InspireED was born from a simple belief: every student deserves the
+              opportunity to learn, grow, and make a meaningful impact.
+            </p>
+          </ScrollReveal>
 
           <LineReveal className="mt-20 md:mt-28" delay={0.1} />
         </div>
@@ -203,33 +245,35 @@ export default function AboutPage() {
           </ScrollReveal>
 
           <div className="mt-16 grid gap-16 md:grid-cols-2 md:gap-0">
-            {/* Mission */}
+            {/* Vision */}
             <ScrollReveal
               delay={0.1}
               className="md:border-r md:border-dark/10 md:pr-16"
             >
               <h3 className="font-serif text-3xl font-bold tracking-tight text-dark sm:text-4xl">
-                Mission
+                Vision
               </h3>
               <p className="mt-6 text-base leading-[1.8] text-dark/65 font-sans md:text-lg">
-                To empower young people with the knowledge, skills, and
-                confidence they need to succeed in education and life through
-                accessible programs, mentorship, and community support.
+                To inspire and empower students to discover their potential, by
+                bridging the gap between students and mentorship exposure, nurture
+                their passion, and build the right mindset for success.
               </p>
             </ScrollReveal>
 
             {/* Divider — horizontal on mobile */}
             <div className="h-px w-full bg-dark/10 md:hidden" />
 
-            {/* Vision */}
+            {/* Mission */}
             <ScrollReveal delay={0.3} className="md:pl-16">
               <h3 className="font-serif text-3xl font-bold tracking-tight text-dark sm:text-4xl">
-                Vision
+                Mission
               </h3>
               <p className="mt-6 text-base leading-[1.8] text-dark/65 font-sans md:text-lg">
-                A world where every young person has the tools, guidance, and
-                opportunities to reach their full potential, regardless of their
-                circumstances or starting point.
+                To raise giants of a new generation, changemakers and problem solvers
+                that are fed with the right information that fosters success, growth,
+                and are ready to make an impact, solve problems, raise solutions and
+                provide help to others. To empower every young student in Nigeria,
+                Africa and abroad!
               </p>
             </ScrollReveal>
           </div>
@@ -399,6 +443,17 @@ export default function AboutPage() {
                 Become a Volunteer
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
+            </MagneticButton>
+
+            <MagneticButton>
+              <a
+                href="https://chat.whatsapp.com/De8dAQTc8rE4divhzVV7WG?mode=gi_t"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-cream/20 px-8 py-4 font-sans text-sm font-semibold tracking-wide text-cream transition-colors hover:border-cream/50 hover:bg-cream/5"
+              >
+                Join Community
+              </a>
             </MagneticButton>
 
             <MagneticButton>

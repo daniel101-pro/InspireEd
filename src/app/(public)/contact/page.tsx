@@ -13,31 +13,29 @@ import StaggerContainer, {
 const contactInfo = [
   {
     label: "Email",
-    value: "info@inspireed.org",
-    href: "mailto:info@inspireed.org",
+    value: "inspireed.org@gmail.com",
+    href: "mailto:inspireed.org@gmail.com",
   },
   {
     label: "Phone",
-    value: "(555) 123-4567",
-    href: "tel:+15551234567",
-  },
-  {
-    label: "Address",
-    value: "123 Education Lane, Suite 200\nInnovation City, CA 90210",
-    href: null,
-  },
-  {
-    label: "Office Hours",
-    value: "Monday \u2014 Friday\n9:00 AM \u2014 5:00 PM",
-    href: null,
+    value: "+(234) 8109198312",
+    href: "tel:+2348109198312",
   },
 ];
 
 const socialLinks = [
-  { label: "Instagram", href: "#" },
-  { label: "Twitter", href: "#" },
-  { label: "Facebook", href: "#" },
-  { label: "YouTube", href: "#" },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/inspireed_connect?igsh=cXQ4bnlqeThsejZx",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/inspired-initiative1/",
+  },
+  {
+    label: "WhatsApp Community",
+    href: "https://chat.whatsapp.com/De8dAQTc8rE4divhzVV7WG?mode=gi_t",
+  },
 ];
 
 const subjectOptions = [
@@ -144,7 +142,7 @@ export default function ContactPage() {
 
               {/* Social Links */}
               <StaggerItem>
-                <LineReveal delay={0.6} />
+                <LineReveal delay={0.4} />
                 <div className="pt-8">
                   <span className="block font-sans text-xs tracking-[0.2em] uppercase text-dark/40">
                     Social
@@ -154,6 +152,8 @@ export default function ContactPage() {
                       <a
                         key={social.label}
                         href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="group relative font-sans text-base text-dark transition-colors duration-300 hover:text-accent"
                       >
                         {social.label}
@@ -316,10 +316,10 @@ export default function ContactPage() {
           <ScrollReveal delay={0.8} className="mt-12">
             <MagneticButton strength={0.2}>
               <a
-                href="mailto:info@inspireed.org"
+                href="mailto:inspireed.org@gmail.com"
                 className="group relative inline-block font-serif text-3xl text-accent italic transition-colors duration-300 hover:text-cream sm:text-4xl lg:text-5xl"
               >
-                info@inspireed.org
+                inspireed.org@gmail.com
                 <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-cream transition-transform duration-500 group-hover:scale-x-100" />
               </a>
             </MagneticButton>
