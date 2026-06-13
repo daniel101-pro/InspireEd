@@ -12,12 +12,16 @@ import {
   Image,
   Settings,
   ArrowLeft,
+  Mail,
+  LogOut,
 } from "lucide-react";
+import { clearAuthToken } from "@/lib/dashboardAuth";
 
 const navItems = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/dashboard/programs", label: "Programs", icon: Briefcase },
   { href: "/dashboard/volunteers", label: "Volunteers", icon: Users },
+  { href: "/dashboard/messages", label: "Messages", icon: Mail },
   { href: "/dashboard/content", label: "Content", icon: FileText },
   { href: "/dashboard/mentorship", label: "Mentorship", icon: Heart },
   { href: "/dashboard/gallery", label: "Gallery", icon: Image },
@@ -80,7 +84,17 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
       </nav>
 
       {/* Back to site */}
-      <div className="px-3 pb-8">
+      <div className="space-y-1 px-3 pb-8">
+        <button
+          onClick={() => {
+            clearAuthToken();
+            window.location.href = "/dashboard";
+          }}
+          className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-xs text-cream/30 transition-colors hover:bg-cream/5 hover:text-cream/60"
+        >
+          <LogOut className="h-3 w-3" />
+          Sign out
+        </button>
         <Link
           href="/"
           className="flex items-center gap-2 px-3 py-2.5 text-xs text-cream/30 transition-colors hover:text-cream/60"

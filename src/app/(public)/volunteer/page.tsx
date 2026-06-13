@@ -106,6 +106,8 @@ export default function VolunteerPage() {
     availability: [] as string[],
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleAvailabilityChange = (option: string) => {
     setFormData((prev) => ({
@@ -116,9 +118,37 @@ export default function VolunteerPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const response = await fetch("/api/submissions/volunteer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const body = (await response.json()) as { error?: string };
+        throw new Error(body.error ?? "Failed to submit application");
+      }
+
+      setSubmitted(true);
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        roleInterest: "",
+        whyVolunteer: "",
+        availability: [],
+      });
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Failed to submit application");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -557,13 +587,15 @@ export default function VolunteerPage() {
               </fieldset>
 
               {/* Submit */}
-              <div className="mt-16">
+              <div className="mt-16 space-y-3">
+                {submitError && <p className="text-sm text-red-600">{submitError}</p>}
                 <MagneticButton>
                   <button
                     type="submit"
-                    className="group inline-flex items-center gap-4 bg-dark px-10 py-5 font-sans text-sm uppercase tracking-[0.2em] text-cream transition-colors hover:bg-accent"
+                    disabled={submitting}
+                    className="group inline-flex items-center gap-4 bg-dark px-10 py-5 font-sans text-sm uppercase tracking-[0.2em] text-cream transition-colors hover:bg-accent disabled:opacity-60"
                   >
-                    Submit Application
+                    {submitting ? "Submitting..." : "Submit Application"}
                     <span className="inline-block h-px w-6 bg-cream/40 transition-all group-hover:w-10 group-hover:bg-cream" />
                   </button>
                 </MagneticButton>

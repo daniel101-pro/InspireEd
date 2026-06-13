@@ -9,98 +9,24 @@ import LineReveal from "@/components/animations/LineReveal";
 import StaggerContainer, {
   StaggerItem,
 } from "@/components/animations/StaggerContainer";
-
-/* ─────────────────────────────────────────────
-   DATA
-   ───────────────────────────────────────────── */
-
-const resources = [
-  {
-    num: "01",
-    title: "Study Guides",
-    description:
-      "Comprehensive, educator-designed materials spanning Math, Science, English, and Social Studies. Built to reinforce classroom learning and develop lasting academic foundations.",
-  },
-  {
-    num: "02",
-    title: "College Prep",
-    description:
-      "Application timelines, essay frameworks, SAT/ACT strategies, and personal statement templates. Everything to navigate the admissions process with confidence.",
-  },
-  {
-    num: "03",
-    title: "Scholarships",
-    description:
-      "A curated, regularly updated database of financial aid opportunities with deadlines, eligibility details, and application tips for students of every background.",
-  },
-  {
-    num: "04",
-    title: "Career Kit",
-    description:
-      "Assessment tools, industry overviews, career path guides, and informational interview templates to help you discover your passions and plan your professional future.",
-  },
-];
-
-const articles = [
-  {
-    title: "5 Study Habits That Actually Work",
-    excerpt:
-      "Science-backed techniques to boost retention, sharpen focus, and transform the way you learn. Practical strategies you can start using today.",
-    date: "Feb 15, 2026",
-  },
-  {
-    title: "Building Your First Resume",
-    excerpt:
-      "Your resume is your first impression. Learn how to highlight strengths and experiences, even if you are just getting started in your career journey.",
-    date: "Jan 28, 2026",
-  },
-  {
-    title: "Why Mentorship Matters",
-    excerpt:
-      "Stories from real InspireED mentors and mentees about how meaningful connections opened doors and shaped futures within our community.",
-    date: "Jan 10, 2026",
-  },
-];
-
-const faqs = [
-  {
-    question: "Who can participate in InspireED programs?",
-    answer:
-      "Our programs are open to youth ages 13 to 21 from all backgrounds. Whether you are a middle school student seeking tutoring support or a young adult exploring career options, there is a program for you. We welcome participants of all skill levels.",
-  },
-  {
-    question: "Are all programs free of charge?",
-    answer:
-      "Yes. All core programs, workshops, study sessions, and resources are completely free. We believe access to quality education and mentorship should never be limited by financial barriers.",
-  },
-  {
-    question: "How do I sign up for a program?",
-    answer:
-      "Visit our Contact page and fill out the interest form, or reach out directly at info@inspireed.org. You can also register in person at any session location. We will connect you with the right program based on your goals.",
-  },
-  {
-    question: "Where are sessions held?",
-    answer:
-      "Sessions take place at community centers, schools, and libraries across the city. We also offer virtual sessions for students who prefer to participate from home. Locations and links are shared upon registration.",
-  },
-  {
-    question: "Can parents or guardians get involved?",
-    answer:
-      "Absolutely. Parents and guardians can volunteer as facilitators, attend information nights, help organize events, or stay informed through our newsletter. Family engagement is central to student success.",
-  },
-  {
-    question: "Do I need to bring anything to sessions?",
-    answer:
-      "Just yourself and a willingness to learn. We provide all materials, worksheets, and supplies. If you own a laptop or tablet, feel free to bring it for digital workshops, but it is never required.",
-  },
-];
+import { useDashboard } from "@/context/DashboardContext";
+import { getSortedFaqs, formatArticleDate } from "@/lib/siteContent";
+import type { Article } from "@/types/dashboard";
+import FormModal from "@/components/dashboard/FormModal";
 
 /* ─────────────────────────────────────────────
    PAGE
    ───────────────────────────────────────────── */
 
 export default function ResourcesPage() {
+  const { data } = useDashboard();
+  const resources = data.resources;
+  const articles = [...data.articles]
+    .filter((article) => article.isPublished)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const faqs = getSortedFaqs(data);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
 
   return (
     <main className="bg-cream text-dark">
@@ -165,13 +91,19 @@ export default function ResourcesPage() {
 
                     {/* Link */}
                     <div className="md:col-span-2 md:text-right">
-                      <a
-                        href="#"
-                        className="inline-block font-sans text-sm font-medium text-accent transition-opacity hover:opacity-60"
-                      >
-                        Access&thinsp;
-                        <span className="text-xs">&rarr;</span>
-                      </a>
+                      {item.url ? (
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-block font-sans text-sm font-medium text-accent transition-opacity hover:opacity-60"
+                        >
+                          Access&thinsp;
+                          <span className="text-xs">&rarr;</span>
+                        </a>
+                      ) : (
+                        <span className="text-sm text-dark/30">Coming soon</span>
+                      )}
                     </div>
                   </div>
                 </ScrollReveal>
@@ -196,7 +128,7 @@ export default function ResourcesPage() {
 
           <StaggerContainer className="mt-16 space-y-0" staggerDelay={0.15}>
             {articles.map((article, i) => (
-              <StaggerItem key={i}>
+              <StaggerItem key={article.id}>
                 <div
                   className={`border-t border-cream/10 py-12 md:py-16 ${
                     i === articles.length - 1 ? "border-b border-cream/10" : ""
@@ -205,7 +137,7 @@ export default function ResourcesPage() {
                   <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:items-start md:gap-8">
                     {/* Date */}
                     <span className="font-sans text-xs uppercase tracking-[0.2em] text-cream/30 md:col-span-2 md:pt-2">
-                      {article.date}
+                      {formatArticleDate(article.date)}
                     </span>
 
                     {/* Title */}
@@ -218,13 +150,14 @@ export default function ResourcesPage() {
                       <p className="font-sans text-base leading-relaxed text-cream/50">
                         {article.excerpt}
                       </p>
-                      <a
-                        href="#"
+                      <button
+                        type="button"
+                        onClick={() => setSelectedArticle(article)}
                         className="mt-4 inline-block font-sans text-sm font-medium text-accent transition-opacity hover:opacity-60"
                       >
                         Read&thinsp;
                         <span className="text-xs">&rarr;</span>
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -250,7 +183,7 @@ export default function ResourcesPage() {
             {faqs.map((faq, i) => {
               const isOpen = openFaq === i;
               return (
-                <div key={i}>
+                <div key={faq.id}>
                   {i === 0 && <LineReveal />}
                   <button
                     onClick={() => setOpenFaq(isOpen ? null : i)}
@@ -344,6 +277,24 @@ export default function ResourcesPage() {
           </ScrollReveal>
         </div>
       </section>
+
+      <FormModal
+        open={!!selectedArticle}
+        onClose={() => setSelectedArticle(null)}
+        title={selectedArticle?.title ?? "Article"}
+      >
+        {selectedArticle && (
+          <div className="space-y-4">
+            <p className="text-xs uppercase tracking-[0.2em] text-dark/40">
+              {formatArticleDate(selectedArticle.date)}
+            </p>
+            <p className="text-sm leading-relaxed text-dark/60">{selectedArticle.excerpt}</p>
+            <div className="whitespace-pre-wrap text-sm leading-relaxed text-dark/80">
+              {selectedArticle.content}
+            </div>
+          </div>
+        )}
+      </FormModal>
     </main>
   );
 }

@@ -57,6 +57,7 @@ export interface Resource {
   num: string;
   title: string;
   description: string;
+  url: string;
 }
 
 export interface MentorshipApplication {
@@ -76,6 +77,16 @@ export interface MentorMenteePair {
   status: "active" | "paused" | "completed";
   startDate: string;
   goals: string;
+}
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: "new" | "read" | "archived";
+  submittedAt: string;
 }
 
 export interface SiteSettings {
@@ -117,6 +128,7 @@ export interface DashboardData {
   partners: Partner[];
   mentorshipApplications: MentorshipApplication[];
   mentorPairs: MentorMenteePair[];
+  contactMessages: ContactMessage[];
   settings: SiteSettings;
   stats: ImpactStats;
   trends: AnalyticsTrend[];

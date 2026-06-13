@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useDashboard } from "@/context/DashboardContext";
-import type { TeamMember, SiteSettings, ImpactStats } from "@/types/dashboard";
+import type { TeamMember, SiteSettings, ImpactStats, AnalyticsTrend } from "@/types/dashboard";
 import FormModal from "@/components/dashboard/FormModal";
 import ConfirmDialog from "@/components/dashboard/ConfirmDialog";
 import PageHeader from "@/components/dashboard/PageHeader";
@@ -25,6 +25,8 @@ export default function SettingsPage() {
     programsDelivered: 0,
     communityPartners: 0,
   });
+
+  const [trends, setTrends] = useState<AnalyticsTrend[]>([]);
 
   /* ── Team Member modal ── */
   const [memberModalOpen, setMemberModalOpen] = useState(false);
@@ -51,8 +53,9 @@ export default function SettingsPage() {
     if (!loading) {
       setContact({ ...data.settings });
       setStats({ ...data.stats });
+      setTrends(data.trends.map((trend) => ({ ...trend })));
     }
-  }, [loading, data.settings, data.stats]);
+  }, [loading, data.settings, data.stats, data.trends]);
 
   if (loading) {
     return (
@@ -69,7 +72,22 @@ export default function SettingsPage() {
 
   /* ── Stats handlers ── */
   function handleSaveStats() {
-    dispatch({ type: "UPDATE_STATS", payload: stats });
+    dispatch({
+      type: "UPDATE_STATS",
+      payload: { ...stats, communityPartners: data.partners.length },
+    });
+  }
+
+  function handleSaveTrends() {
+    dispatch({ type: "UPDATE_TRENDS", payload: trends });
+  }
+
+  function updateTrend(index: number, key: keyof AnalyticsTrend, value: string | number) {
+    setTrends((current) =>
+      current.map((trend, i) =>
+        i === index ? { ...trend, [key]: key === "month" ? value : Number(value) || 0 } : trend
+      )
+    );
   }
 
   /* ── Team member handlers ── */
@@ -395,7 +413,55 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      {/* ── 5. Reset ── */}
+      {/* ── 5. Analytics Trends ── */}
+      <section className="rounded-2xl border border-dark/5 p-6">
+        <h2 className="mb-5 font-serif text-xl">Analytics Trends</h2>
+        <p className="mb-4 text-sm text-dark/50">
+          These monthly values power the charts on the dashboard overview.
+        </p>
+        <div className="space-y-3">
+          {trends.map((trend, index) => (
+            <div key={`${trend.month}-${index}`} className="grid gap-3 rounded-xl border border-dark/5 p-4 sm:grid-cols-4">
+              <input
+                value={trend.month}
+                onChange={(e) => updateTrend(index, "month", e.target.value)}
+                className={inputClass}
+              />
+              <input
+                type="number"
+                value={trend.youth}
+                onChange={(e) => updateTrend(index, "youth", e.target.value)}
+                placeholder="Youth"
+                className={inputClass}
+              />
+              <input
+                type="number"
+                value={trend.volunteers}
+                onChange={(e) => updateTrend(index, "volunteers", e.target.value)}
+                placeholder="Volunteers"
+                className={inputClass}
+              />
+              <input
+                type="number"
+                value={trend.programs}
+                onChange={(e) => updateTrend(index, "programs", e.target.value)}
+                placeholder="Programs"
+                className={inputClass}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="pt-4">
+          <button
+            onClick={handleSaveTrends}
+            className="rounded-lg bg-dark px-5 py-2.5 text-sm text-cream transition-colors hover:bg-accent"
+          >
+            Save Trends
+          </button>
+        </div>
+      </section>
+
+      {/* ── 6. Reset ── */}
       <section className="rounded-2xl border border-dark/5 p-6">
         <h2 className="mb-2 font-serif text-xl">Danger Zone</h2>
         <p className="mb-4 text-sm text-dark/50">

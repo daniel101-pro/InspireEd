@@ -12,6 +12,9 @@ const statusStyles: Record<string, string> = {
   rejected: "bg-dark/5 text-dark/40 line-through",
   completed: "bg-dark/10 text-dark/60",
   paused: "border border-dark/10 text-dark/30",
+  new: "bg-accent/15 text-accent",
+  read: "border border-dark/15 text-dark/50",
+  archived: "bg-dark/5 text-dark/35",
 };
 
 export default function StatusBadge({ status }: StatusBadgeProps) {

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { DashboardProvider } from "@/context/DashboardContext";
 import DashboardShell from "@/components/dashboard/DashboardShell";
+import DashboardAuthGate from "@/components/dashboard/DashboardAuthGate";
 
 export const metadata: Metadata = {
   title: {
@@ -15,8 +15,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <DashboardProvider>
+    <DashboardAuthGate>
       <DashboardShell>{children}</DashboardShell>
-    </DashboardProvider>
+    </DashboardAuthGate>
   );
 }

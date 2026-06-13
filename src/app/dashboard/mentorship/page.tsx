@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDashboard } from "@/context/DashboardContext";
 import type { MentorMenteePair, MentorshipApplication } from "@/types/dashboard";
 import DataTable from "@/components/dashboard/DataTable";
 import FormModal from "@/components/dashboard/FormModal";
+import ConfirmDialog from "@/components/dashboard/ConfirmDialog";
 import StatusBadge from "@/components/dashboard/StatusBadge";
 import SearchFilter from "@/components/dashboard/SearchFilter";
 import PageHeader from "@/components/dashboard/PageHeader";
@@ -16,7 +17,11 @@ type Column<T> = {
 };
 
 export default function MentorshipPage() {
-  const { data, loading, dispatch } = useDashboard();
+  const { data, loading, dispatch, refreshContent } = useDashboard();
+
+  useEffect(() => {
+    refreshContent();
+  }, [refreshContent]);
 
   /* ── Search & Filter ── */
   const [pairSearch, setPairSearch] = useState("");
@@ -27,7 +32,8 @@ export default function MentorshipPage() {
   /* ── Modals ── */
   const [createOpen, setCreateOpen] = useState(false);
   const [editPairId, setEditPairId] = useState<string | null>(null);
-  const [editAppId, setEditAppId] = useState<string | null>(null);
+  const [deletePairId, setDeletePairId] = useState<string | null>(null);
+  const [deleteAppId, setDeleteAppId] = useState<string | null>(null);
 
   /* ── Create / Match form state ── */
   const [formMentor, setFormMentor] = useState("");
@@ -37,6 +43,9 @@ export default function MentorshipPage() {
 
   /* ── Edit pair form state ── */
   const [editStatus, setEditStatus] = useState<MentorMenteePair["status"]>("active");
+  const [editMentor, setEditMentor] = useState("");
+  const [editMentee, setEditMentee] = useState("");
+  const [editStartDate, setEditStartDate] = useState("");
   const [editGoals, setEditGoals] = useState("");
 
   if (loading) {
@@ -100,16 +109,25 @@ export default function MentorshipPage() {
   function openEditPair(pair: MentorMenteePair) {
     setEditPairId(pair.id);
     setEditStatus(pair.status);
+    setEditMentor(pair.mentorName);
+    setEditMentee(pair.menteeName);
+    setEditStartDate(pair.startDate);
     setEditGoals(pair.goals);
   }
 
   function handleEditPairSubmit() {
-    if (!editPairId) return;
+    if (!editPairId || !editMentor.trim() || !editMentee.trim()) return;
     dispatch({
       type: "UPDATE_MENTOR_PAIR",
       payload: {
         id: editPairId,
-        updates: { status: editStatus, goals: editGoals.trim() },
+        updates: {
+          status: editStatus,
+          mentorName: editMentor.trim(),
+          menteeName: editMentee.trim(),
+          startDate: editStartDate,
+          goals: editGoals.trim(),
+        },
       },
     });
     setEditPairId(null);
@@ -120,11 +138,11 @@ export default function MentorshipPage() {
       type: "UPDATE_MENTORSHIP_APP_STATUS",
       payload: { id: app.id, status: "matched" },
     });
-    if (app.type === "mentor") {
-      openCreate(app.name, "");
-    } else {
-      openCreate("", app.name);
-    }
+    setFormMentor(app.type === "mentor" ? app.name : "");
+    setFormMentee(app.type === "mentee" ? app.name : "");
+    setFormStartDate(new Date().toISOString().split("T")[0]);
+    setFormGoals(app.interests);
+    setCreateOpen(true);
   }
 
   /* ── Pair table columns ── */
@@ -169,16 +187,16 @@ export default function MentorshipPage() {
             }}
             className="rounded-md border border-dark/10 px-2.5 py-1 text-xs text-dark/60 transition-colors hover:border-dark/30 hover:text-dark"
           >
-            Edit Status
+            Edit
           </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
-              openEditPair(p);
+              setDeletePairId(p.id);
             }}
-            className="rounded-md border border-dark/10 px-2.5 py-1 text-xs text-dark/60 transition-colors hover:border-dark/30 hover:text-dark"
+            className="rounded-md border border-dark/10 px-2.5 py-1 text-xs text-dark/60 transition-colors hover:border-red-300 hover:text-red-600"
           >
-            Edit Details
+            Delete
           </button>
         </div>
       ),
@@ -231,18 +249,30 @@ export default function MentorshipPage() {
     {
       key: "actions",
       label: "Actions",
-      render: (a) =>
-        a.status === "pending" ? (
+      render: (a) => (
+        <div className="flex gap-2">
+          {a.status === "pending" && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleMatch(a);
+              }}
+              className="rounded-md bg-dark px-3 py-1 text-xs text-cream transition-colors hover:bg-accent"
+            >
+              Match
+            </button>
+          )}
           <button
             onClick={(e) => {
               e.stopPropagation();
-              handleMatch(a);
+              setDeleteAppId(a.id);
             }}
-            className="rounded-md bg-dark px-3 py-1 text-xs text-cream transition-colors hover:bg-accent"
+            className="rounded-md border border-dark/10 px-2.5 py-1 text-xs text-dark/60 transition-colors hover:border-red-300 hover:text-red-600"
           >
-            Match
+            Delete
           </button>
-        ) : null,
+        </div>
+      ),
     },
   ];
 
@@ -385,6 +415,39 @@ export default function MentorshipPage() {
         <div className="space-y-5">
           <div>
             <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-dark/40">
+              Mentor Name
+            </label>
+            <input
+              type="text"
+              value={editMentor}
+              onChange={(e) => setEditMentor(e.target.value)}
+              className="w-full border-b border-dark/20 bg-transparent py-2 text-sm text-dark outline-none transition-colors focus:border-dark/50"
+            />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-dark/40">
+              Mentee Name
+            </label>
+            <input
+              type="text"
+              value={editMentee}
+              onChange={(e) => setEditMentee(e.target.value)}
+              className="w-full border-b border-dark/20 bg-transparent py-2 text-sm text-dark outline-none transition-colors focus:border-dark/50"
+            />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-dark/40">
+              Start Date
+            </label>
+            <input
+              type="date"
+              value={editStartDate}
+              onChange={(e) => setEditStartDate(e.target.value)}
+              className="w-full border-b border-dark/20 bg-transparent py-2 text-sm text-dark outline-none transition-colors focus:border-dark/50"
+            />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-dark/40">
               Status
             </label>
             <select
@@ -418,6 +481,32 @@ export default function MentorshipPage() {
           </button>
         </div>
       </FormModal>
+
+      <ConfirmDialog
+        open={deletePairId !== null}
+        onClose={() => setDeletePairId(null)}
+        onConfirm={() => {
+          if (deletePairId) {
+            dispatch({ type: "DELETE_MENTOR_PAIR", payload: deletePairId });
+            setDeletePairId(null);
+          }
+        }}
+        title="Delete Pair"
+        description="This mentor-mentee pair will be permanently removed."
+      />
+
+      <ConfirmDialog
+        open={deleteAppId !== null}
+        onClose={() => setDeleteAppId(null)}
+        onConfirm={() => {
+          if (deleteAppId) {
+            dispatch({ type: "DELETE_MENTORSHIP_APPLICATION", payload: deleteAppId });
+            setDeleteAppId(null);
+          }
+        }}
+        title="Delete Application"
+        description="This mentorship application will be permanently removed."
+      />
     </div>
   );
 }

@@ -9,19 +9,7 @@ import LineReveal from "@/components/animations/LineReveal";
 import StaggerContainer, {
   StaggerItem,
 } from "@/components/animations/StaggerContainer";
-
-const contactInfo = [
-  {
-    label: "Email",
-    value: "inspireed.org@gmail.com",
-    href: "mailto:inspireed.org@gmail.com",
-  },
-  {
-    label: "Phone",
-    value: "+(234) 8109198312",
-    href: "tel:+2348109198312",
-  },
-];
+import { useDashboard } from "@/context/DashboardContext";
 
 const socialLinks = [
   {
@@ -48,6 +36,26 @@ const subjectOptions = [
 ];
 
 export default function ContactPage() {
+  const { data } = useDashboard();
+  const contactInfo = [
+    {
+      label: "Email",
+      value: data.settings.email,
+      href: `mailto:${data.settings.email}`,
+    },
+    {
+      label: "Phone",
+      value: data.settings.phone,
+      href: `tel:${data.settings.phone.replace(/[^\d+]/g, "")}`,
+    },
+    ...(data.settings.address
+      ? [{ label: "Address", value: data.settings.address, href: "" }]
+      : []),
+    ...(data.settings.officeHours
+      ? [{ label: "Office Hours", value: data.settings.officeHours, href: "" }]
+      : []),
+  ];
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -56,6 +64,8 @@ export default function ContactPage() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -65,14 +75,31 @@ export default function ContactPage() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
+    setSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const response = await fetch("/api/submissions/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const body = (await response.json()) as { error?: string };
+        throw new Error(body.error ?? "Failed to send message");
+      }
+
+      setSubmitted(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
-    }, 3000);
+      setTimeout(() => setSubmitted(false), 3000);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Failed to send message");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -267,15 +294,16 @@ export default function ContactPage() {
                 </div>
 
                 {/* Submit */}
-                <div className="pt-4">
+                <div className="space-y-3 pt-4">
+                  {submitError && <p className="text-sm text-red-600">{submitError}</p>}
                   <MagneticButton strength={0.15}>
                     <button
                       type="submit"
-                      disabled={submitted}
+                      disabled={submitted || submitting}
                       className="group relative inline-flex items-center gap-3 overflow-hidden border border-dark bg-dark px-10 py-4 font-sans text-sm tracking-[0.15em] uppercase text-cream transition-all duration-500 hover:bg-accent hover:border-accent disabled:opacity-60"
                     >
                       <span className="relative z-10">
-                        {submitted ? "Message Sent" : "Send Message"}
+                        {submitting ? "Sending..." : submitted ? "Message Sent" : "Send Message"}
                       </span>
                       <motion.span
                         className="relative z-10 inline-block"
@@ -316,10 +344,10 @@ export default function ContactPage() {
           <ScrollReveal delay={0.8} className="mt-12">
             <MagneticButton strength={0.2}>
               <a
-                href="mailto:inspireed.org@gmail.com"
+                href={`mailto:${data.settings.email}`}
                 className="group relative inline-block font-serif text-3xl text-accent italic transition-colors duration-300 hover:text-cream sm:text-4xl lg:text-5xl"
               >
-                inspireed.org@gmail.com
+                {data.settings.email}
                 <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-cream transition-transform duration-500 group-hover:scale-x-100" />
               </a>
             </MagneticButton>

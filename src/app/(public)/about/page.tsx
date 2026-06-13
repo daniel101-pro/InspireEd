@@ -10,6 +10,7 @@ import StaggerContainer, {
 } from "@/components/animations/StaggerContainer";
 import Marquee from "@/components/animations/Marquee";
 import MagneticButton from "@/components/animations/MagneticButton";
+import { useDashboard } from "@/context/DashboardContext";
 
 /* ────────────────────────────────────────────
    DATA
@@ -54,64 +55,15 @@ const coreValues = [
   },
 ];
 
-const teamMembers = [
-  {
-    name: "Raphael Ogundipe",
-    initials: "RO",
-    title: "Founder & Team Lead",
-    bio: "Visionary behind InspireED initiative. A 15-year-old changemaker, moved by impact and ready to make a change and lead the giants of the next generation into greatness!",
-  },
-  {
-    name: "Rita",
-    initials: "RI",
-    title: "Graphic Designer",
-    bio: "Rita has been an incredible asset to InspireED. Her creativity and design skills are truly unmatched. Whenever we need impromptu designs, Rita effortlessly brings our vision to life. She also played a key role in hosting our first InspireED session.",
-  },
-  {
-    name: "Yewande",
-    initials: "YE",
-    title: "Programs Coordinator",
-    bio: "Yewande is the driving force behind our events. She meticulously plans every detail, from schedules to logistics. Whether it\u2019s a seminar, a workshop, or a picnic event, Yewande ensures that everything runs smoothly and efficiently.",
-  },
-  {
-    name: "Favour",
-    initials: "FA",
-    title: "Social Media Manager",
-    bio: "Favour is the heartbeat of our Instagram presence. With her deep understanding of social media, she crafts engaging posts and fosters a vibrant online community. Her positive energy and excellent communication skills bring a wonderful vibe to our team.",
-  },
-  {
-    name: "Samuel",
-    initials: "SA",
-    title: "Content Writer",
-    bio: "Samuel is our go-to wordsmith. Whenever we need fresh and compelling content, Samuel steps in with creative ideas and engaging text. His contributions ensure that our messaging is always clear, impactful, and well-crafted.",
-  },
-  {
-    name: "Opemipo",
-    initials: "OP",
-    title: "PR & Community Manager",
-    bio: "Opemipo is the pillar of our community management. She ensures that our group remains positive, engaged, and well-organized, especially during busy periods. Her efforts help maintain a supportive environment.",
-  },
-  {
-    name: "Gifted",
-    initials: "GI",
-    title: "Video Creator",
-    bio: "Gifted is our video expert, bringing our content to life with her creative touch. Every video she produces is engaging and visually compelling. Gifted\u2019s friendly personality and dedication also add a wonderful vibe to the team.",
-  },
-];
-
-const partners = [
-  "iCove Initiative",
-  "Femi Omolade Private College",
-  "Seyi Ogundipe",
-  "Daniel Falodun",
-  "Forge Africa",
-];
-
 /* ────────────────────────────────────────────
    PAGE
    ──────────────────────────────────────────── */
 
 export default function AboutPage() {
+  const { data } = useDashboard();
+  const teamMembers = data.teamMembers;
+  const partners = data.partners.map((partner) => partner.name);
+
   return (
     <div className="bg-cream text-dark">
       {/* ═══════════════════════════════════════

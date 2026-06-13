@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useDashboard } from "@/context/DashboardContext";
 import type { VolunteerApplication } from "@/types/dashboard";
 import PageHeader from "@/components/dashboard/PageHeader";
@@ -8,6 +8,7 @@ import SearchFilter from "@/components/dashboard/SearchFilter";
 import DataTable from "@/components/dashboard/DataTable";
 import StatusBadge from "@/components/dashboard/StatusBadge";
 import FormModal from "@/components/dashboard/FormModal";
+import ConfirmDialog from "@/components/dashboard/ConfirmDialog";
 
 const statusFilterOptions = [
   { value: "", label: "All Statuses" },
@@ -26,11 +27,16 @@ function formatDate(dateStr: string) {
 }
 
 export default function VolunteersPage() {
-  const { data, loading, dispatch } = useDashboard();
+  const { data, loading, dispatch, refreshContent } = useDashboard();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [selectedVolunteer, setSelectedVolunteer] =
     useState<VolunteerApplication | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  useEffect(() => {
+    refreshContent();
+  }, [refreshContent]);
 
   const filtered = useMemo(() => {
     let list = data.volunteers;
@@ -152,7 +158,17 @@ export default function VolunteersPage() {
               Reject
             </button>
           </div>
-        ) : null,
+        ) : (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setDeleteId(v.id);
+            }}
+            className="text-xs font-medium text-dark/40 transition-colors hover:text-dark"
+          >
+            Delete
+          </button>
+        ),
     },
   ];
 
@@ -261,6 +277,20 @@ export default function VolunteersPage() {
           </div>
         )}
       </FormModal>
+
+      <ConfirmDialog
+        open={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={() => {
+          if (deleteId) {
+            dispatch({ type: "DELETE_VOLUNTEER", payload: deleteId });
+            setDeleteId(null);
+            setSelectedVolunteer(null);
+          }
+        }}
+        title="Delete Application"
+        description="This volunteer application will be permanently removed."
+      />
     </div>
   );
 }

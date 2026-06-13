@@ -13,60 +13,10 @@ import StaggerContainer, {
 } from "@/components/animations/StaggerContainer";
 import LineReveal from "@/components/animations/LineReveal";
 import GallerySection from "@/components/GallerySection";
+import { useDashboard } from "@/context/DashboardContext";
+import { getFeaturedPrograms, getImpactStats } from "@/lib/siteContent";
 
 /* ─────────────────────────── DATA ─────────────────────────── */
-
-const impactStats = [
-  {
-    target: 150,
-    suffix: "+",
-    label: "Students Empowered",
-    description:
-      "Through our sessions, community programs, and educational initiatives, InspireED has empowered over 150 students with valuable knowledge, exposure, and opportunities for growth.",
-  },
-  {
-    target: 5,
-    suffix: "+",
-    label: "Expert Speakers & Mentors",
-    description:
-      "We have hosted inspiring speakers including professionals, mentors, and industry leaders who share their experiences and insights to guide students on their academic and career journeys.",
-  },
-  {
-    target: 3,
-    suffix: "+",
-    label: "Impactful Learning Sessions",
-    description:
-      "InspireED has organized engaging virtual sessions focused on helping students understand opportunities, improve their applications, and develop skills needed for future success.",
-  },
-  {
-    target: 10,
-    suffix: "+",
-    label: "Community Partners",
-    description:
-      "Our growing network of passionate volunteers, ambassadors, and students continues to expand, building a supportive community dedicated to learning, mentorship, and positive impact.",
-  },
-];
-
-const programs = [
-  {
-    index: "01",
-    title: "Learning Sessions & Webinars",
-    description:
-      "We organize engaging learning sessions and webinars where students interact with experienced professionals, mentors, entrepreneurs, and experts from different industries.",
-  },
-  {
-    index: "02",
-    title: "Mentorship & Career Guidance",
-    description:
-      "InspireED connects students with mentors who provide guidance on education, career paths, and personal development, helping them make better decisions about their future.",
-  },
-  {
-    index: "03",
-    title: "Application & Opportunity Support",
-    description:
-      "We help students learn how to prepare strong applications for scholarships, schools, internships, and leadership opportunities — standing out with confidence.",
-  },
-];
 
 const testimonials = [
   {
@@ -113,6 +63,10 @@ const marqueeItems = [
 /* ─────────────────────────── PAGE ─────────────────────────── */
 
 export default function HomePage() {
+  const { data } = useDashboard();
+  const impactStats = getImpactStats(data);
+  const programs = getFeaturedPrograms(data);
+
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -277,7 +231,7 @@ export default function HomePage() {
           <ScrollReveal delay={0.6} className="mt-12 text-center lg:text-left">
             <div className="flex flex-wrap justify-center lg:justify-start gap-8">
               <div className="flex items-center gap-3">
-                <span className="font-serif text-accent text-2xl md:text-3xl font-bold">30+</span>
+                <span className="font-serif text-accent text-2xl md:text-3xl font-bold">{data.stats.mentorsVolunteers}+</span>
                 <span className="text-dark/50 text-sm">Mentors &amp; Volunteers</span>
               </div>
             </div>
@@ -299,7 +253,7 @@ export default function HomePage() {
 
           <StaggerContainer staggerDelay={0.2} className="space-y-0">
             {programs.map((program, i) => (
-              <StaggerItem key={program.index}>
+              <StaggerItem key={program.title}>
                 <LineReveal delay={i * 0.1} />
                 <Link
                   href="/programs"

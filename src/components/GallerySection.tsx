@@ -12,29 +12,8 @@ import {
 } from "framer-motion";
 import ScrollReveal from "./animations/ScrollReveal";
 import LineReveal from "./animations/LineReveal";
-
-const galleryImages = [
-  { src: "/Gallery/1-1.png", alt: "Seyi Emmanuel Ogundipe — The Stand Out Factor", category: "Spotlight" },
-  { src: "/Gallery/3.png", alt: "Varnessa Kayen Varlyngton — Eco Journalist & UN Champion", category: "Spotlight" },
-  { src: "/Gallery/4-4.png", alt: "Chidera Duru — Education and Technology", category: "Spotlight" },
-  { src: "/Gallery/5.png", alt: "The Stand Out Factor — Secret to a Memorable Application", category: "Events" },
-  { src: "/Gallery/5-3.png", alt: "Tony Odhiambo — MIT Scholar & STEM Educator", category: "Spotlight" },
-  { src: "/Gallery/6-1.png", alt: "Ambassador Kabengwa Eric — Makerere University", category: "Ambassadors" },
-  { src: "/Gallery/7.png", alt: "Ambassador Omar Touray — Gambia", category: "Ambassadors" },
-  { src: "/Gallery/9-2.png", alt: "Ambassador Bonou Precious", category: "Ambassadors" },
-  { src: "/Gallery/10.png", alt: "Ambassador Aghomi Dabo", category: "Ambassadors" },
-  { src: "/Gallery/14-1.png", alt: "Unlocking the Power of Technology and Education", category: "Events" },
-  { src: "/Gallery/17_20260227_204106_0016.png", alt: "Digital Fame — Becoming a Recognizable Voice Online", category: "Events" },
-  { src: "/Gallery/InspirED.png", alt: "Ambassador Olanireti Godgift — Career Builder College", category: "Ambassadors" },
-  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20.png", alt: "Meet the InspireED Team", category: "Community" },
-  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20_20260220_134701_0000.png", alt: "January Project Winners — The Optimistics One", category: "Community" },
-  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20_20260227_204721_0000.png", alt: "Oluwadamilare Joseph — Digital Fame Spotlight", category: "Spotlight" },
-  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20(2)-2.png", alt: "Daniel Falodun — Full-Stack Developer & Rise Global Fellow", category: "Spotlight" },
-  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20-2.png", alt: "Ambassador Excel Ebeagbor — Montessori School", category: "Ambassadors" },
-  { src: "/Gallery/Flyer%20for%20Inspire.Ed%20community%20by%20RitaOkam%20%20(2).png", alt: "Partnership Announcement — InspireED x ICOVE", category: "Community" },
-];
-
-const categories = ["All", "Spotlight", "Ambassadors", "Events", "Community"];
+import { useDashboard } from "@/context/DashboardContext";
+import { getGalleryCategories } from "@/lib/siteContent";
 
 function GalleryCard({
   src,
@@ -123,6 +102,9 @@ function GalleryCard({
 }
 
 export default function GallerySection() {
+  const { data } = useDashboard();
+  const galleryImages = data.gallery;
+  const categories = getGalleryCategories(data);
   const [activeFilter, setActiveFilter] = useState("All");
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -203,7 +185,7 @@ export default function GallerySection() {
               className="columns-2 md:columns-3 gap-3 md:gap-4 space-y-3 md:space-y-4"
             >
               {filtered.map((img, i) => (
-                <div key={img.src} className="break-inside-avoid">
+                <div key={img.id} className="break-inside-avoid">
                   <GalleryCard
                     src={img.src}
                     alt={img.alt}

@@ -5,6 +5,7 @@ import PageHeader from "@/components/dashboard/PageHeader";
 import StatsCard from "@/components/dashboard/StatsCard";
 import MiniChart from "@/components/dashboard/MiniChart";
 import StatusBadge from "@/components/dashboard/StatusBadge";
+import { computeTrendPercent } from "@/lib/trends";
 
 export default function DashboardOverview() {
   const { data, loading } = useDashboard();
@@ -28,6 +29,10 @@ export default function DashboardOverview() {
     .sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime())
     .slice(0, 5);
 
+  const recentMessages = [...data.contactMessages]
+    .sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime())
+    .slice(0, 5);
+
   const activePairs = data.mentorPairs.filter((p) => p.status === "active");
 
   return (
@@ -40,25 +45,25 @@ export default function DashboardOverview() {
           label="Youth Impacted"
           value={data.stats.youthImpacted}
           suffix="+"
-          trend="+12%"
+          trend={computeTrendPercent(data.trends, "youth")}
         />
         <StatsCard
           label="Mentors & Volunteers"
           value={data.stats.mentorsVolunteers}
           suffix="+"
-          trend="+8%"
+          trend={computeTrendPercent(data.trends, "volunteers")}
         />
         <StatsCard
           label="Programs"
           value={data.stats.programsDelivered}
           suffix="+"
-          trend="+15%"
+          trend={computeTrendPercent(data.trends, "programs")}
         />
         <StatsCard
           label="Partners"
           value={data.stats.communityPartners}
           suffix="+"
-          trend="+5%"
+          trend={`${data.partners.length} listed`}
         />
       </div>
 
@@ -84,24 +89,55 @@ export default function DashboardOverview() {
         </div>
       </div>
 
-      {/* Recent Applications & Active Mentorship */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* Recent Activity */}
+      <div className="grid gap-6 lg:grid-cols-3">
         {/* Recent Applications */}
         <div className="rounded-2xl border border-dark/5 bg-white p-6">
           <h3 className="mb-4 font-serif text-lg">Recent Applications</h3>
           <div className="space-y-0">
-            {recentVolunteers.map((v) => (
-              <div
-                key={v.id}
-                className="flex items-center justify-between border-b border-dark/5 py-3 last:border-0"
-              >
-                <div>
-                  <p className="text-sm font-medium text-dark">{v.fullName}</p>
-                  <p className="text-xs text-dark/40">{v.roleInterest}</p>
+            {recentVolunteers.length === 0 ? (
+              <p className="py-6 text-center text-sm text-dark/30">
+                No volunteer applications yet.
+              </p>
+            ) : (
+              recentVolunteers.map((v) => (
+                <div
+                  key={v.id}
+                  className="flex items-center justify-between border-b border-dark/5 py-3 last:border-0"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-dark">{v.fullName}</p>
+                    <p className="text-xs text-dark/40">{v.roleInterest}</p>
+                  </div>
+                  <StatusBadge status={v.status} />
                 </div>
-                <StatusBadge status={v.status} />
-              </div>
-            ))}
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Recent Messages */}
+        <div className="rounded-2xl border border-dark/5 bg-white p-6">
+          <h3 className="mb-4 font-serif text-lg">Recent Messages</h3>
+          <div className="space-y-0">
+            {recentMessages.length === 0 ? (
+              <p className="py-6 text-center text-sm text-dark/30">
+                No contact messages yet.
+              </p>
+            ) : (
+              recentMessages.map((message) => (
+                <div
+                  key={message.id}
+                  className="flex items-center justify-between border-b border-dark/5 py-3 last:border-0"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-dark">{message.name}</p>
+                    <p className="text-xs text-dark/40">{message.subject}</p>
+                  </div>
+                  <StatusBadge status={message.status} />
+                </div>
+              ))
+            )}
           </div>
         </div>
 

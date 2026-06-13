@@ -573,6 +573,7 @@ function ResourcesTab({ resources }: { resources: Resource[] }) {
   const [formNum, setFormNum] = useState("");
   const [formTitle, setFormTitle] = useState("");
   const [formDescription, setFormDescription] = useState("");
+  const [formUrl, setFormUrl] = useState("");
 
   const filtered = useMemo(() => {
     if (!search) return resources;
@@ -595,6 +596,7 @@ function ResourcesTab({ resources }: { resources: Resource[] }) {
     setFormNum(nextNum);
     setFormTitle("");
     setFormDescription("");
+    setFormUrl("");
     setModalOpen(true);
   }
 
@@ -603,6 +605,7 @@ function ResourcesTab({ resources }: { resources: Resource[] }) {
     setFormNum(resource.num);
     setFormTitle(resource.title);
     setFormDescription(resource.description);
+    setFormUrl(resource.url);
     setModalOpen(true);
   }
 
@@ -618,6 +621,7 @@ function ResourcesTab({ resources }: { resources: Resource[] }) {
             num: formNum,
             title: formTitle,
             description: formDescription,
+            url: formUrl,
           },
         },
       });
@@ -628,6 +632,7 @@ function ResourcesTab({ resources }: { resources: Resource[] }) {
           num: formNum,
           title: formTitle,
           description: formDescription,
+          url: formUrl,
         },
       });
     }
@@ -750,6 +755,16 @@ function ResourcesTab({ resources }: { resources: Resource[] }) {
               rows={4}
               className="w-full resize-none rounded-lg border border-dark/10 bg-dark/[0.02] px-3 py-2 text-sm text-dark outline-none transition-colors placeholder:text-dark/30 focus:border-dark/20"
               placeholder="Describe this resource..."
+            />
+          </Field>
+
+          <Field label="Link URL">
+            <input
+              type="url"
+              value={formUrl}
+              onChange={(e) => setFormUrl(e.target.value)}
+              className="w-full border-b border-dark/20 bg-transparent py-2 text-sm text-dark outline-none transition-colors placeholder:text-dark/30 focus:border-dark/40"
+              placeholder="https://..."
             />
           </Field>
 

@@ -8,12 +8,13 @@ import FormModal from "@/components/dashboard/FormModal";
 import ConfirmDialog from "@/components/dashboard/ConfirmDialog";
 import SearchFilter from "@/components/dashboard/SearchFilter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Pencil, Trash2, ExternalLink } from "lucide-react";
-
-const categories = ["All", "Spotlight", "Ambassadors", "Events", "Community"];
+import { Plus, Pencil, Trash2, ExternalLink, Upload } from "lucide-react";
+import { getAuthToken } from "@/lib/dashboardAuth";
+import { getGalleryCategories } from "@/lib/siteContent";
 
 export default function GalleryPage() {
   const { data, dispatch } = useDashboard();
+  const categories = getGalleryCategories(data);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<GalleryImage | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -21,6 +22,32 @@ export default function GalleryPage() {
   const [filter, setFilter] = useState("All");
 
   const [form, setForm] = useState({ src: "", alt: "", category: "Spotlight" });
+  const [uploading, setUploading] = useState(false);
+
+  async function handleFileUpload(file: File) {
+    const token = getAuthToken();
+    if (!token) return;
+
+    setUploading(true);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body,
+      });
+      const result = (await response.json()) as { url?: string; error?: string };
+      if (!response.ok || !result.url) {
+        throw new Error(result.error ?? "Upload failed");
+      }
+      setForm((prev) => ({ ...prev, src: result.url! }));
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  const categoryOptions = categories.filter((category) => category !== "All");
 
   const filtered = data.gallery.filter((img) => {
     const matchSearch = img.alt.toLowerCase().includes(search.toLowerCase()) || img.category.toLowerCase().includes(search.toLowerCase());
@@ -140,6 +167,23 @@ export default function GalleryPage() {
       >
         <div className="space-y-4">
           <div>
+            <label className="mb-1.5 block text-xs font-medium text-dark/60">Upload image</label>
+            <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-dark/10 px-4 py-2 text-sm text-dark/70 hover:border-accent hover:text-accent">
+              <Upload className="h-4 w-4" />
+              {uploading ? "Uploading..." : "Choose file"}
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleFileUpload(file);
+                }}
+              />
+            </label>
+          </div>
+
+          <div>
             <label className="mb-1.5 block text-xs font-medium text-dark/60">Image URL</label>
             <input
               type="url"
@@ -175,9 +219,12 @@ export default function GalleryPage() {
               onChange={(e) => setForm({ ...form, category: e.target.value })}
               className="w-full rounded-lg border border-dark/10 bg-cream px-3 py-2 text-sm outline-none transition-colors focus:border-accent"
             >
-              {categories.filter(c => c !== "All").map((cat) => (
+              {categoryOptions.map((cat) => (
                 <option key={cat} value={cat}>{cat}</option>
               ))}
+              {!categoryOptions.includes(form.category) && (
+                <option value={form.category}>{form.category}</option>
+              )}
             </select>
           </div>
 

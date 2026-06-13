@@ -10,83 +10,8 @@ import StaggerContainer, {
   StaggerItem,
 } from "@/components/animations/StaggerContainer";
 import LineReveal from "@/components/animations/LineReveal";
-
-/* ─────────────────────────────────────────────
-   DATA
-   ───────────────────────────────────────────── */
-
-const featuredPrograms = [
-  {
-    title: "Learning Sessions & Webinars",
-    description:
-      "We organize engaging learning sessions and webinars where students interact with experienced professionals, mentors, entrepreneurs, and experts from different industries. These sessions expose students to real-world knowledge, career insights, and practical advice that help them make informed academic and career decisions.",
-  },
-  {
-    title: "Mentorship & Career Guidance",
-    description:
-      "InspireED connects students with mentors who provide guidance on education, career paths, and personal development. Through mentorship, students gain valuable perspectives from individuals who have experience in their chosen fields, helping them make better decisions about their future.",
-  },
-  {
-    title: "Application & Opportunity Support",
-    description:
-      "Many students struggle with standing out when applying for opportunities. InspireED helps students learn how to prepare strong applications for scholarships, schools, internships, and leadership opportunities. We guide students on building impressive profiles, communicating their achievements effectively, and presenting themselves confidently.",
-  },
-  {
-    title: "Student Community & Networking",
-    description:
-      "We have built a growing community where students connect, share ideas, collaborate, and support each other\u2019s growth. Through this community, students gain access to opportunities, resources, and a network of like-minded young people who are passionate about learning and development.",
-  },
-  {
-    title: "High School Ambassadors Program",
-    description:
-      "Our High School Ambassadors Program empowers passionate students to represent InspireED in their schools and communities. Ambassadors help spread awareness about opportunities, encourage their peers to participate in educational programs, and contribute to building a stronger culture of learning.",
-  },
-  {
-    title: "Youth Empowerment Initiatives",
-    description:
-      "Beyond our sessions, InspireED runs initiatives and projects focused on empowering young people with knowledge, leadership skills, and the confidence to pursue meaningful impact in their communities.",
-  },
-];
-
-const workshopFocusAreas = [
-  {
-    title: "Application & Opportunity Workshops",
-    description:
-      "Students learn how to create strong applications for scholarships, schools, internships, and leadership opportunities. These workshops teach students how to present their achievements, write compelling personal statements, and stand out.",
-  },
-  {
-    title: "Career Exploration Workshops",
-    description:
-      "These workshops expose students to different career paths by connecting them with professionals from various industries who share their experiences and guidance.",
-  },
-  {
-    title: "Leadership & Personal Development Workshops",
-    description:
-      "Students develop essential life skills such as leadership, communication, critical thinking, and confidence.",
-  },
-  {
-    title: "Skills & Knowledge Workshops",
-    description:
-      "Focused sessions where students learn practical skills such as public speaking, networking, personal branding, and preparing for future opportunities.",
-  },
-];
-
-const events = [
-  {
-    title: "Annual Ambassador\u2019s Picnic",
-    description:
-      "An exclusive event for InspireED ambassadors to connect, celebrate their achievements, and build stronger bonds within the community. The picnic happens every August, offering a relaxed and fun environment for ambassadors to network and share their experiences.",
-    date: "August (Annual)",
-    cta: { label: "Become an Ambassador", href: "/volunteer" },
-  },
-  {
-    title: "InspireED Partnership Summit",
-    description:
-      "An annual event bringing together the InspireED initiative, our partners, and collaborators to network, build meaningful connections, and explore new opportunities for impact. The summit is a platform for organizations and individuals to align on shared goals and strengthen their commitment to youth empowerment.",
-    date: "Annual",
-    cta: { label: "Become a Partner", href: "/contact" },
-  },
-];
+import { useDashboard } from "@/context/DashboardContext";
+import { getActivePrograms, getEventCta } from "@/lib/siteContent";
 
 /* ─────────────────────────────────────────────
    SECTION INDEX COMPONENT
@@ -105,6 +30,16 @@ function SectionIndex({ index }: { index: string }) {
    ───────────────────────────────────────────── */
 
 export default function ProgramsPage() {
+  const { data } = useDashboard();
+  const featuredPrograms = getActivePrograms(data, "study-session");
+  const workshopFocusAreas = getActivePrograms(data, "workshop");
+  const events = getActivePrograms(data, "event").map((event) => ({
+    title: event.title,
+    description: event.description,
+    date: event.date ?? "Annual",
+    cta: getEventCta(event.title),
+  }));
+
   return (
     <main className="bg-cream text-dark">
       {/* ── HEADER ──────────────────────────────── */}

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import TextReveal from "@/components/animations/TextReveal";
 import ScrollReveal from "@/components/animations/ScrollReveal";
 import MagneticButton from "@/components/animations/MagneticButton";
@@ -78,6 +79,42 @@ const partnershipTypes = [
 /* ───────────────────── Page ───────────────────── */
 
 export default function MentorshipPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    type: "mentee" as "mentor" | "mentee",
+    interests: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const response = await fetch("/api/submissions/mentorship", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const body = (await response.json()) as { error?: string };
+        throw new Error(body.error ?? "Failed to submit application");
+      }
+
+      setSubmitted(true);
+      setFormData({ name: "", email: "", type: "mentee", interests: "" });
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Failed to submit application");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <main>
       {/* ─── 1. Header ─── */}
@@ -247,7 +284,101 @@ export default function MentorshipPage() {
         </div>
       </section>
 
-      {/* ─── 5. CTA ─── */}
+      {/* ─── 5. Application Form ─── */}
+      <section id="mentorship-application" className="border-t border-dark/10 bg-cream px-6 py-24 md:py-32">
+        <div className="mx-auto max-w-3xl">
+          <ScrollReveal>
+            <p className="text-sm font-medium uppercase tracking-[0.3em] text-accent">
+              Apply now
+            </p>
+            <h2 className="mt-4 font-serif text-4xl tracking-tight text-dark md:text-5xl">
+              Mentorship application
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-dark/55">
+              Tell us whether you want to mentor or be mentored. Our team reviews every application and follows up by email.
+            </p>
+          </ScrollReveal>
+
+          {submitted ? (
+            <ScrollReveal delay={0.2} className="mt-10 rounded-2xl border border-dark/10 bg-dark p-8 text-cream">
+              <h3 className="font-serif text-2xl">Application received</h3>
+              <p className="mt-3 text-sm leading-relaxed text-cream/60">
+                Thank you for applying. We will review your submission and get back to you soon.
+              </p>
+            </ScrollReveal>
+          ) : (
+            <form onSubmit={handleSubmit} className="mt-10 space-y-8">
+              <div className="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label className="block text-xs uppercase tracking-[0.2em] text-dark/40">Full name</label>
+                  <input
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+                    className="mt-3 w-full border-b border-dark/20 bg-transparent pb-3 text-dark outline-none focus:border-accent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-[0.2em] text-dark/40">Email</label>
+                  <input
+                    required
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+                    className="mt-3 w-full border-b border-dark/20 bg-transparent pb-3 text-dark outline-none focus:border-accent"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-[0.2em] text-dark/40">I want to</label>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  {(["mentor", "mentee"] as const).map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setFormData((prev) => ({ ...prev, type }))}
+                      className={`rounded-full px-5 py-2 text-sm capitalize transition-colors ${
+                        formData.type === type
+                          ? "bg-dark text-cream"
+                          : "border border-dark/15 text-dark/60 hover:text-dark"
+                      }`}
+                    >
+                      Be a {type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-[0.2em] text-dark/40">Goals & interests</label>
+                <textarea
+                  required
+                  rows={5}
+                  value={formData.interests}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, interests: e.target.value }))}
+                  placeholder="Share your background, goals, and what you hope to get from mentorship."
+                  className="mt-3 w-full resize-none border-b border-dark/20 bg-transparent pb-3 text-dark outline-none focus:border-accent"
+                />
+              </div>
+
+              {submitError && <p className="text-sm text-red-600">{submitError}</p>}
+
+              <MagneticButton>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="inline-flex items-center gap-3 bg-dark px-8 py-4 text-sm uppercase tracking-[0.15em] text-cream transition-colors hover:bg-accent disabled:opacity-60"
+                >
+                  {submitting ? "Submitting..." : "Submit application"}
+                </button>
+              </MagneticButton>
+            </form>
+          )}
+        </div>
+      </section>
+
+      {/* ─── 6. CTA ─── */}
       <section className="bg-dark px-6 py-28 md:py-36">
         <div className="mx-auto max-w-4xl text-center">
           <ScrollReveal>
@@ -272,11 +403,15 @@ export default function MentorshipPage() {
           <ScrollReveal delay={0.45}>
             <div className="mt-12 flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-8">
               <MagneticButton>
-                <Link
-                  href="/contact"
+                <a
+                  href="#apply"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("mentorship-application")?.scrollIntoView({ behavior: "smooth" });
+                  }}
                   className="group inline-flex items-center gap-3 border border-cream bg-cream px-8 py-4 text-sm font-medium uppercase tracking-[0.15em] text-dark transition-colors hover:bg-accent hover:border-accent hover:text-cream"
                 >
-                  Become a Mentor
+                  Apply for mentorship
                   <svg
                     className="h-3 w-3 transition-transform group-hover:translate-x-0.5"
                     fill="none"
@@ -286,7 +421,7 @@ export default function MentorshipPage() {
                   >
                     <path d="M1 6h10M7 2l4 4-4 4" />
                   </svg>
-                </Link>
+                </a>
               </MagneticButton>
 
               <MagneticButton>
